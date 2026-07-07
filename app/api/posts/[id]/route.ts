@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient, getUserFromToken } from "@/lib/supabase/server";
+import { createServerSupabaseClient, getUserIdFromToken } from "@/lib/supabase/server";
 
 const bucketName = process.env.SUPABASE_STORAGE_BUCKET || "arteiras-posts";
 
@@ -10,14 +10,9 @@ export async function DELETE(
   try {
     const authHeader = _request.headers.get("authorization");
     const token = authHeader?.replace("Bearer ", "");
+    const userId = token ? getUserIdFromToken(token) : null;
 
-    if (!token) {
-      return NextResponse.json({ error: "Login obrigatorio." }, { status: 401 });
-    }
-
-    const { user, error: userError } = getUserFromToken(token);
-
-    if (userError || !user) {
+    if (!userId) {
       return NextResponse.json({ error: "Sessao invalida." }, { status: 401 });
     }
 
@@ -34,7 +29,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Post nao encontrado." }, { status: 404 });
     }
 
-    if (post.owner_id !== user.id) {
+    if (post.owner_id !== userId) {
       return NextResponse.json({ error: "Sem permissao para deletar este post." }, { status: 403 });
     }
 

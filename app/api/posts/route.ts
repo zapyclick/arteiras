@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient, getUserFromToken } from "@/lib/supabase/server";
+import { createServerSupabaseClient, getUserIdFromToken } from "@/lib/supabase/server";
 
 const bucketName = process.env.SUPABASE_STORAGE_BUCKET || "arteiras-posts";
 
@@ -7,14 +7,9 @@ export async function POST(request: Request) {
   try {
     const authHeader = request.headers.get("authorization");
     const token = authHeader?.replace("Bearer ", "");
+    const userId = token ? getUserIdFromToken(token) : null;
 
-    if (!token) {
-      return NextResponse.json({ error: "Login obrigatorio para publicar." }, { status: 401 });
-    }
-
-    const { user, error: userError } = getUserFromToken(token);
-
-    if (userError || !user) {
+    if (!userId) {
       return NextResponse.json({ error: "Sessao invalida ou expirada." }, { status: 401 });
     }
 
@@ -32,7 +27,7 @@ export async function POST(request: Request) {
 
     const supabase = createServerSupabaseClient();
     const extension = image.name.split(".").pop() || "jpg";
-    const filePath = `${user.id}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+    const filePath = `${userId}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
 
     const { error: uploadError } = await supabase.storage
       .from(bucketName)
@@ -54,7 +49,7 @@ export async function POST(request: Request) {
     const { data, error: insertError } = await supabase
       .from("arteiras_posts")
       .insert({
-        owner_id: user.id,
+        owner_id: userId,
         title,
         caption,
         category,

@@ -17,24 +17,16 @@ export function createServerSupabaseClient() {
   });
 }
 
-export function getUserFromToken(token: string): { user: { id: string } | null; error: string | null } {
+export function getUserIdFromToken(token: string): string | null {
   try {
     const parts = token.split(".");
-    if (parts.length !== 3) {
-      return { user: null, error: "Token mal formatado." };
-    }
+    if (parts.length !== 3) return null;
 
     const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
     const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, "=");
     const payload = JSON.parse(atob(padded));
-    const userId = payload.sub;
-
-    if (!userId) {
-      return { user: null, error: "Token invalido: usuario nao identificado." };
-    }
-
-    return { user: { id: userId }, error: null };
+    return payload.sub || null;
   } catch {
-    return { user: null, error: "Token invalido ou mal formatado." };
+    return null;
   }
 }
