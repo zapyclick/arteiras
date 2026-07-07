@@ -17,31 +17,24 @@ export function createServerSupabaseClient() {
   });
 }
 
-export async function verifyAuthToken(token: string) {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+export function getUserFromToken(token: string): { user: { id: string } | null; error: string | null } {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      return { user: null, error: "Token mal formatado." };
+    }
+
+    const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, "=");
+    const payload = JSON.parse(atob(padded));
+    const userId = payload.sub;
+
+    if (!userId) {
+      return { user: null, error: "Token invalido: usuario nao identificado." };
+    }
+
+    return { user: { id: userId }, error: null };
+  } catch {
+    return { user: null, error: "Token invalido ou mal formatado." };
   }
-
-  const client = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
-
-  const { error } = await client.auth.setSession({
-    access_token: token,
-    refresh_token: "",
-  });
-
-  if (error) {
-    return { user: null, error };
-  }
-
-  const {
-    data: { user },
-    error: getUserError,
-  } = await client.auth.getUser();
-
-  return { user, error: getUserError };
 }
