@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClientWithToken, createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient, verifyAuthToken } from "@/lib/supabase/server";
 
 const bucketName = process.env.SUPABASE_STORAGE_BUCKET || "arteiras-posts";
 
@@ -12,11 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Login obrigatorio para publicar." }, { status: 401 });
     }
 
-    const authSupabase = createClientWithToken(token);
-    const {
-      data: { user },
-      error: userError,
-    } = await authSupabase.auth.getUser();
+    const { user, error: userError } = await verifyAuthToken(token);
 
     if (userError || !user) {
       return NextResponse.json({ error: "Sessao invalida ou expirada." }, { status: 401 });

@@ -17,28 +17,31 @@ export function createServerSupabaseClient() {
   });
 }
 
-export function createAuthSupabaseClient() {
+export async function verifyAuthToken(token: string) {
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY.");
   }
 
-  return createClient(supabaseUrl, supabaseAnonKey, {
+  const client = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
     },
   });
-}
 
-export function createClientWithToken(token: string) {
-  if (!supabaseUrl) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL.");
+  const { error } = await client.auth.setSession({
+    access_token: token,
+    refresh_token: "",
+  });
+
+  if (error) {
+    return { user: null, error };
   }
 
-  return createClient(supabaseUrl, token, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
+  const {
+    data: { user },
+    error: getUserError,
+  } = await client.auth.getUser();
+
+  return { user, error: getUserError };
 }
