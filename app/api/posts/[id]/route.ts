@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAuthSupabaseClient, createServerSupabaseClient } from "@/lib/supabase/server";
+import { createClientWithToken, createServerSupabaseClient } from "@/lib/supabase/server";
 
 const bucketName = process.env.SUPABASE_STORAGE_BUCKET || "arteiras-posts";
 
@@ -15,14 +15,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Login obrigatorio." }, { status: 401 });
     }
 
-    const authSupabase = createAuthSupabaseClient();
-    const auth = authSupabase.auth as unknown as {
-      getUser: (token: string) => Promise<{ data: { user: { id: string } | null }; error: Error | null }>;
-    };
+    const authSupabase = createClientWithToken(token);
     const {
       data: { user },
       error: userError,
-    } = await auth.getUser(token);
+    } = await authSupabase.auth.getUser();
 
     if (userError || !user) {
       return NextResponse.json({ error: "Sessao invalida." }, { status: 401 });
