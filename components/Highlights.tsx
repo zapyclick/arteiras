@@ -1,14 +1,15 @@
 "use client";
 
-import { Sparkles, Lightbulb, BadgePercent, Activity, Trophy } from "lucide-react";
+import { Sparkles, Puzzle, Box, PartyPopper, Scissors, BadgePercent } from "lucide-react";
 import { motion } from "framer-motion";
 
-const iconMap = {
+const iconMap: Record<string, typeof Sparkles> = {
   Novidades: Sparkles,
-  Dicas: Lightbulb,
+  "Projetos personalizados": Puzzle,
+  "Caixas e Organizadores": Box,
+  "Decoração de Festa em MDF": PartyPopper,
+  "Recortes para Artesanato": Scissors,
   Promoções: BadgePercent,
-  Atividades: Activity,
-  Resultados: Trophy,
 };
 
 type HighlightsProps = {
@@ -22,7 +23,7 @@ export function Highlights({ categories, activeCategory, onChange }: HighlightsP
     <section className="mx-auto mt-10 max-w-6xl px-4 sm:px-6" aria-label="Filtrar publicações">
       <div className="flex gap-4 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {categories.map((category) => {
-          const Icon = iconMap[category as keyof typeof iconMap] ?? Sparkles;
+          const Icon = iconMap[category] ?? Sparkles;
           const isActive = activeCategory === category;
 
           return (

@@ -18,7 +18,7 @@ export function FeedShowcase({ posts, onSelect }: FeedShowcaseProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.2 }}
       className="relative z-30 mx-auto -mt-16 w-[min(92vw,760px)] rounded-[1.75rem] bg-white p-4 shadow-soft ring-1 ring-black/5 md:-mt-20 md:p-6"
-      aria-label="Feed de atividades da academia"
+      aria-label="Feed da Arteiras"
     >
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>

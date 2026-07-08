@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   </head>
   <body>
     <script>
-      sessionStorage.setItem("academia-atletica-shared-draft", ${JSON.stringify(
+      sessionStorage.setItem("arteiras-shared-draft", ${JSON.stringify(
         JSON.stringify(draft)
       )});
       location.replace("/admin?from=share");

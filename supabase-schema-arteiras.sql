@@ -11,6 +11,11 @@ create table if not exists public.arteiras_posts (
 
 alter table public.arteiras_posts enable row level security;
 
+create policy "Anyone can read posts"
+  on public.arteiras_posts
+  for select
+  using (true);
+
 create policy "Owners can read their posts"
   on public.arteiras_posts
   for select

@@ -1,4 +1,10 @@
-export type PostCategory = "Novidades" | "Dicas" | "Promoções" | "Atividades" | "Resultados";
+export type PostCategory =
+  | "Novidades"
+  | "Projetos personalizados"
+  | "Caixas e Organizadores"
+  | "Decoração de Festa em MDF"
+  | "Recortes para Artesanato"
+  | "Promoções";
 
 export type Post = {
   id: string;

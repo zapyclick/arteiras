@@ -131,7 +131,7 @@ export function AdminPublisher() {
   }, [session]);
 
   useEffect(() => {
-    const rawDraft = sessionStorage.getItem("academia-atletica-shared-draft");
+    const rawDraft = sessionStorage.getItem("arteiras-shared-draft");
 
     if (!rawDraft) {
       return;
@@ -152,7 +152,7 @@ export function AdminPublisher() {
         caption: sharedDraft.caption || current.caption,
       }));
       setStatusMessage("Foto recebida do compartilhamento. Revise e publique.");
-      sessionStorage.removeItem("academia-atletica-shared-draft");
+      sessionStorage.removeItem("arteiras-shared-draft");
     } catch {
       setErrorMessage("Nao foi possivel abrir a foto compartilhada.");
     }
@@ -304,7 +304,7 @@ export function AdminPublisher() {
         <div className="mb-5 flex justify-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-ember px-4 py-2 text-xs font-bold text-white shadow-lift">
             <Sparkles aria-hidden="true" size={15} />
-            Publicar no feed da Atlética
+            Publicar no feed da Arteiras
           </span>
         </div>
 
@@ -373,7 +373,7 @@ export function AdminPublisher() {
                       <div>
                         <h1 className="text-lg font-bold text-ink">Criar conta</h1>
                         <p className="mt-1 text-xs font-medium text-ink/50">
-                          Seu dono da academia? Crie sua conta para publicar no feed.
+                          Crie sua conta para publicar no feed da Arteiras.
                         </p>
                       </div>
                       <label className="block">
@@ -450,7 +450,7 @@ export function AdminPublisher() {
                 <form onSubmit={handleSubmit} className="space-y-4 px-5 py-5">
                   <div>
                     <h1 className="text-lg font-bold text-ink">Publicar no feed</h1>
-                    <p className="mt-1 text-xs font-medium text-ink/50">Academia Atlética</p>
+                    <p className="mt-1 text-xs font-medium text-ink/50">Arteiras</p>
                   </div>
 
                   <input

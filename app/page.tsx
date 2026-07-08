@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Instagram, MapPin, MessageCircle, Clock, ArrowDown, Store, Activity } from "lucide-react";
+import { Instagram, MapPin, MessageCircle, Clock, ArrowDown, Store, Sparkles } from "lucide-react";
 import { Benefits } from "@/components/Benefits";
 import { Highlights } from "@/components/Highlights";
 import { FeedShowcase } from "@/components/FeedShowcase";
@@ -131,9 +131,9 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { value: "+500", label: "Alunos ativos" },
-            { value: "12", label: "Anos de história" },
-            { value: "4.9", label: "Avaliação média" },
+            { value: "+24", label: "Anos de história" },
+            { value: "+500", label: "Projetos realizados" },
+            { value: "+200", label: "Clientes atendidos" },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -178,7 +178,7 @@ export default function Home() {
 
       <section className="mx-4 mb-16 overflow-hidden rounded-[2rem] bg-ink px-5 py-12 text-white sm:mx-6 md:mx-auto md:max-w-6xl md:px-12 md:py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <Activity aria-hidden="true" size={32} className="mx-auto text-ember" />
+          <Sparkles aria-hidden="true" size={32} className="mx-auto text-ember" />
           <h2 className="mt-4 text-3xl font-bold md:text-5xl">
             Pronto para fazer arte?
           </h2>
